@@ -1,4 +1,3 @@
 export const WeatherEnv = {
-	//@ts-ignore
-	API_KEY: process.env.REACT_APP_WEATHER_API_KEY || "",
+	API_KEY: import.meta.env.VITE_WEATHER_API_KEY || "",
 };
