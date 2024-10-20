@@ -55,6 +55,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
 				`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
 			);
 			setWeather(response.data);
+			console.log(response.data);
 		} catch (error) {
 			setError("Error fetching weather data. Please try again.");
 			console.error("Error fetching weather data:", error);
