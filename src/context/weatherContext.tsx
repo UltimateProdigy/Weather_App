@@ -12,12 +12,21 @@ interface WeatherData {
 	main: {
 		temp: number;
 		humidity: number;
+		temp_max: number;
+		temp_min: number;
+	};
+	clouds: {
+		all: number;
 	};
 	weather: {
+		main: string;
 		description: string;
 		icon: string;
 	}[];
 	name: string;
+    wind: {
+        speed: number;
+    }
 }
 
 interface WeatherContextType {
@@ -65,7 +74,7 @@ export const WeatherProvider: React.FC<WeatherProviderProps> = ({
 	};
 
 	useEffect(() => {
-		fetchWeather("LAGOS");
+		fetchWeather("Lagos");
 	}, []);
 
 	return (
