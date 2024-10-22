@@ -8,8 +8,16 @@ import { Humidity } from "../components/icons/Humidity";
 import { Wind } from "../components/icons/Wind";
 
 export default function Home() {
-	const { weather } = useWeather();
+	const { weather, fetchWeather } = useWeather();
 	const [dateTime, setDateTime] = useState(new Date());
+	const [location, setLocation] = useState("");
+
+	const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter" && location.trim()) {
+			await fetchWeather(location.trim());
+            setLocation("")
+		}
+	};
 
 	useEffect(() => {
 		const timer = setInterval(() => setDateTime(new Date()), 1000);
@@ -54,6 +62,18 @@ export default function Home() {
 						Your browser does not support the video tag.
 					</video>
 				);
+			case "clear":
+				return (
+					<video
+						autoPlay
+						muted
+						loop
+						className="fixed top-0 left-0 min-w-full min-h-full object-cover -z-10"
+					>
+						<source src="/vid/cloudy.mp4" type="video/mp4" />
+						Your browser does not support the video tag.
+					</video>
+				);
 			case "snow":
 				return (
 					<video
@@ -87,9 +107,7 @@ export default function Home() {
 				<div>
 					<p className="mt-[50px] text-3xl">{weather?.name}</p>
 					<p className="mt-1">
-						<span className="font-semibold">
-							{formatTime(dateTime)}
-						</span>
+						<span>{formatTime(dateTime)}</span>
 						<span className="mx-2">-</span>
 						<span className="text-gray-200">
 							{formatDayAndDate(dateTime)}
@@ -107,6 +125,9 @@ export default function Home() {
 				<Input
 					placeholder="Search Location"
 					className="border-slate-200 placeholder:text-slate-200 focus:placeholder:text-gray-700 placeholder:opacity-75 bg-transparent"
+					value={location}
+					onChange={(e) => setLocation(e.target.value)}
+					onKeyPress={handleKeyPress}
 				/>
 				<div>
 					{weather?.weather?.map((data: any) => (
@@ -122,21 +143,21 @@ export default function Home() {
 								<TempMax />
 							</div>
 						</div>
-                        <div className="flex justify-between pt-4">
+						<div className="flex justify-between pt-4">
 							<p>Temp Min</p>
 							<div className="flex gap-4">
 								<p>{weather?.main?.temp_min}°</p>
 								<TempMin />
 							</div>
 						</div>
-                        <div className="flex justify-between pt-4">
+						<div className="flex justify-between pt-4">
 							<p>Humidity</p>
 							<div className="flex gap-4">
 								<p>{weather?.main?.humidity}%</p>
 								<Humidity />
 							</div>
 						</div>
-                        <div className="flex justify-between pt-4">
+						<div className="flex justify-between pt-4">
 							<p>Wind</p>
 							<div className="flex gap-2">
 								<p>{weather?.wind?.speed}km/h</p>
@@ -145,7 +166,7 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
-                <hr className="mt-[70px]" />
+				<hr className="mt-[70px]" />
 			</div>
 		</div>
 	);
