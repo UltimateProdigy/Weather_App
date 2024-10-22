@@ -12,17 +12,16 @@ export default function Home() {
 	const [dateTime, setDateTime] = useState(new Date());
 	const [location, setLocation] = useState("");
 
-	const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === "Enter" && location.trim()) {
-			await fetchWeather(location.trim());
-            setLocation("")
-		}
-	};
-
+	const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && location.trim()) {
+            await fetchWeather(location.trim());
+            setLocation("");
+        }
+    };
 	useEffect(() => {
-		const timer = setInterval(() => setDateTime(new Date()), 1000);
-		return () => clearInterval(timer);
-	}, []);
+		const timer = setTimeout(() => setDateTime(new Date()), 1000);
+		return () => clearTimeout(timer);
+	}, [dateTime]);
 
 	const getBackground = () => {
 		switch (weather?.weather[0]?.main.toLowerCase()) {
@@ -127,7 +126,7 @@ export default function Home() {
 					className="border-slate-200 placeholder:text-slate-200 focus:placeholder:text-gray-700 placeholder:opacity-75 bg-transparent"
 					value={location}
 					onChange={(e) => setLocation(e.target.value)}
-					onKeyPress={handleKeyPress}
+					onKeyDown={handleKeyDown}
 				/>
 				<div>
 					{weather?.weather?.map((data: any) => (
