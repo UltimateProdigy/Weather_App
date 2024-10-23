@@ -13,11 +13,12 @@ export default function Home() {
 	const [location, setLocation] = useState("");
 
 	const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && location.trim()) {
-            await fetchWeather(location.trim());
-            setLocation("");
-        }
-    };
+		if (e.key === "Enter" && location.trim()) {
+			await fetchWeather(location.trim());
+			setLocation("");
+		}
+	};
+
 	useEffect(() => {
 		const timer = setTimeout(() => setDateTime(new Date()), 1000);
 		return () => clearTimeout(timer);
